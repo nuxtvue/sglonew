@@ -1,12 +1,49 @@
+import { BiNews } from "react-icons/bi";
+import { RiProfileLine } from "react-icons/ri";
+import { BiLogIn } from "react-icons/bi";
 import React from "react";
+import Logo from "../../assets/mainassets/Logo.svg";
+import logowuor from "../../assets/mainassets/logowuor.svg";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
+import { Link } from "react-router-dom";
 
 const BlogHeader = () => {
   return (
-    <div className="px-[60px] gap-4 flex flex-wrap sm:gap-6 justify-between items-center bg-gradient-to-r from-purple-500 to-pink-500 mx-6 mt-2 rounded-lg text-xl shadow-lg py-4">
-      <div>Logo</div>
-      <div className="flex gap-4">
-        <div>Войти</div>
-        <div>Регистрация</div>
+    <div className="px-[30px] gap-4 flex flex-wrap sm:gap-6 justify-between items-center  mx-6 mt-2 rounded-lg  shadow-lg py-2 bg-[url('./mainimages/headerback.png')] bg-pink-100">
+      <Link to="/" className="flex flex-row">
+        <div className="flex items-center">
+          <div className="marck-script-regular text-center text-blue-700/70 text-[25px] hidden md:block">
+            Союз женщин
+            <br /> Липецкой области
+          </div>
+          <img src={Logo} alt="" width={120} />
+        </div>
+        <div className="flex items-center">
+          <div className="marck-script-regular text-center text-blue-700/70 text-[25px] hidden md:block">
+            Союз женщин <br /> России
+          </div>
+          <img src={logowuor} alt="" width={108} />
+        </div>
+      </Link>
+      {/*ПОИСК */}
+      <div className="flex items-center">
+        <Input placeholder="Поиск" />
+      </div>
+      <div className="flex gap-4 flex-wrap">
+        <div className="bg-pink-500/10 rounded-lg p-2 border flex items-center justify-center border-pink-500/20 hover:bg-pink-500/40 hover:text-white cursor-pointer font-semibold">
+          <BiNews className="text-2xl" />
+
+          <Link to="/blog"> &nbsp;Новости</Link>
+        </div>
+        <div className="bg-pink-500/10 rounded-lg p-2 border flex items-center justify-center border-pink-500/20 hover:bg-pink-500/40 hover:text-white cursor-pointer font-semibold">
+          <BiLogIn className="text-2xl" />
+          <span> &nbsp;Войти</span>
+        </div>
+        <div className="bg-pink-500/10 rounded-lg p-2 border border-pink-500/20 flex items-center justify-center hover:bg-pink-500/40 hover:text-white cursor-pointer font-semibold">
+          <RiProfileLine className="text-2xl" />
+          &nbsp; Регистрация
+        </div>
       </div>
     </div>
   );
