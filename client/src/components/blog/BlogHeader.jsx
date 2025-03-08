@@ -1,14 +1,16 @@
 import { BiNews } from "react-icons/bi";
 import { RiProfileLine } from "react-icons/ri";
 import { BiLogIn } from "react-icons/bi";
-import React from "react";
+import React, { useState } from "react";
 import Logo from "../../assets/mainassets/Logo.svg";
 import logowuor from "../../assets/mainassets/logowuor.svg";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Link } from "react-router-dom";
+import RegisterDialog from "../register/register";
 
 const BlogHeader = () => {
+  const [showRegisterDialog, setShowRegisterDialog] = useState(false);
   return (
     <div className="px-[30px] gap-4 flex flex-wrap sm:gap-6 justify-between items-center  mx-6 mt-2 rounded-lg  shadow-lg py-2 bg-[url('./mainimages/headerback.png')] bg-pink-100">
       <Link to="/" className="flex flex-row">
@@ -40,10 +42,17 @@ const BlogHeader = () => {
           <BiLogIn className="text-2xl" />
           <span> &nbsp;Войти</span>
         </div>
-        <div className="bg-pink-500/10 rounded-lg p-2 border border-pink-500/20 flex items-center justify-center hover:bg-pink-500/40 hover:text-white cursor-pointer font-semibold">
+        <div
+          className="bg-pink-500/10 rounded-lg p-2 border border-pink-500/20 flex items-center justify-center hover:bg-pink-500/40 hover:text-white cursor-pointer font-semibold"
+          onClick={() => setShowRegisterDialog(true)}
+        >
           <RiProfileLine className="text-2xl" />
           &nbsp; Регистрация
         </div>
+        <RegisterDialog
+          showRegisterDialog={showRegisterDialog}
+          setShowRegisterDialog={setShowRegisterDialog}
+        />
       </div>
     </div>
   );

@@ -3,6 +3,7 @@ import BlogHeader from "../blog/BlogHeader";
 import { Outlet } from "react-router-dom";
 import LeftColumn from "../blog/LeftColumn";
 import AnimationWrapper from "../../common/page-animation";
+import { Toaster } from "@/components/ui/sonner";
 
 const BlogLayout = () => {
   return (
@@ -29,6 +30,7 @@ const BlogLayout = () => {
         </div>
 
         {/* Footer */}
+        <Toaster />
       </div>
     </AnimationWrapper>
   );
