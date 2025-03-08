@@ -11,7 +11,7 @@ const BlogLayout = () => {
       </div>
 
       {/* Outlet */}
-      <div className="bg-[url('./assets/imgs/back.png')] gap-2 flex-wrap-reverse flex p-8 md:px-28 md:py-4  h-screen bg-gray-100 ">
+      <div className="bg-[url('./public/mainimages/cropped-orig-min.png')] bg-repeat-y gap-2 flex-wrap-reverse flex p-8 md:px-28 md:py-4  h-screen bg-gray-100 ">
         <div className="bg-white rounded-lg md:min-w-[24%] min-w-[100%] p-4 shadow-lg">
           leftmenu
         </div>
