@@ -24,7 +24,7 @@ const BlogCard = ({ blog }) => {
         <CardContent>
           <img
             src={"/" + blog.coverImageName[0].path}
-            className="object-cover h-48 w-full"
+            className="object-cover h-48 w-full rounded-md"
             loading="lazy"
             alt={blog.title}
           />

@@ -10,22 +10,7 @@ const BlogPage = () => {
   console.log(params);
   const [blog, setBlog] = useState({});
   const [images, setImages] = useState([]);
-  const images2 = [
-    {
-      original:
-        "https://i.pinimg.com/originals/49/ed/0f/49ed0f7e06046a8a958136154896ada1.webp",
-      thumbnail:
-        "https://i.pinimg.com/originals/49/ed/0f/49ed0f7e06046a8a958136154896ada1.webp",
-    },
-    {
-      original: "https://picsum.photos/id/1015/1000/600/",
-      thumbnail: "https://picsum.photos/id/1015/250/150/",
-    },
-    {
-      original: "https://picsum.photos/id/1019/1000/600/",
-      thumbnail: "https://picsum.photos/id/1019/250/150/",
-    },
-  ];
+
   useEffect(() => {
     const fetchBlogByUrl = async () => {
       try {
@@ -56,13 +41,13 @@ const BlogPage = () => {
       <h1 className="text-lg font-semibold text-center my-4">{blog.title}</h1>
       <article>
         <img
-          src={"/" + images[0]?.path}
+          src={images[0]?.original}
           loading="lazy"
           className="w-[40%] float-left mr-4 rounded-md"
         />
         <p
           dangerouslySetInnerHTML={{ __html: blog.content }}
-          className="ml-4 indent-4"
+          className="ml-4 indent-4 min-h-screen"
         ></p>
       </article>
       <ImageGallery items={images} />;
