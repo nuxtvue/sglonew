@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import ImageGallery from "react-image-gallery";
 // import stylesheet if you're not already using CSS @import
 import "react-image-gallery/styles/css/image-gallery.css";
+import AnimationWrapper from "@/common/page-animation";
 
 const BlogPage = () => {
   const params = useParams();
@@ -37,21 +38,23 @@ const BlogPage = () => {
     fetchBlogByUrl();
   }, [params.slug]);
   return (
-    <div>
-      <h1 className="text-lg font-semibold text-center my-4">{blog.title}</h1>
-      <article>
-        <img
-          src={images[0]?.original}
-          loading="lazy"
-          className="w-[40%] float-left mr-4 rounded-md"
-        />
-        <p
-          dangerouslySetInnerHTML={{ __html: blog.content }}
-          className="ml-4 indent-4 min-h-screen"
-        ></p>
-      </article>
-      <ImageGallery items={images} />;
-    </div>
+    <AnimationWrapper>
+      <div>
+        <h1 className="text-lg font-semibold text-center my-4">{blog.title}</h1>
+        <article>
+          <img
+            src={images[0]?.original}
+            loading="lazy"
+            className="w-[40%] float-left mr-4 rounded-md"
+          />
+          <p
+            dangerouslySetInnerHTML={{ __html: blog.content }}
+            className="ml-4 indent-4 min-h-screen"
+          ></p>
+        </article>
+        <ImageGallery items={images} />;
+      </div>
+    </AnimationWrapper>
   );
 };
 

@@ -1,16 +1,27 @@
-import express from "express";
+import express, { urlencoded } from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import userRoute from "./routes/user.js";
 import blogRoute from "./routes/blog.js";
+import cookieParser from "cookie-parser";
+import sharp from "sharp";
+import multer from "multer";
+import path from "path";
 
 dotenv.config();
 
 const app = express();
-app.use(cors());
-app.use(express.json());
+app.use(cookieParser());
+const corsOptions = {
+  origin: "http://localhost:5173",
+  credentials: true,
+};
+app.use(cors(corsOptions));
+app.use(express.json({ limit: "7mb" }));
+
 app.use("/static", express.static("static"));
+app.use(urlencoded({ extended: true }));
 
 mongoose
   .connect(process.env.MONGO_URL)

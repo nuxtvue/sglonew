@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import BlogCard from "@/components/blog/BlogCard";
 import { Button } from "@/components/ui/button";
+import AnimationWrapper from "@/common/page-animation";
+import { motion } from "framer-motion";
 
 const RegionPage = () => {
   const params = useParams();
@@ -47,26 +49,35 @@ const RegionPage = () => {
     fetchBlogsByRegion();
   }, [params.slug, region, page]);
   return (
-    <div>
+    <AnimationWrapper>
       <div>
         <h1 className="text-center text-lg font-semibold mb-8">{region}</h1>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {blogs.map((blog) => (
-          <BlogCard key={blog._id} blog={blog} />
+        {blogs.map((blog, index) => (
+          <motion.div
+            initial={{ opacity: 0, y: index * 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            key={blog._id}
+          >
+            <BlogCard blog={blog} />
+          </motion.div>
         ))}
       </div>
       <div className="text-center">
-        {" "}
-        <Button
-          variant="outline"
-          onClick={() => setPage(page + 1)}
-          className="my-6 cursor-pointer"
-        >
-          Показать еще...
-        </Button>
+        {blogs.length == 0 && <p>Ничего не найдено</p>}
+        {blogs.length >= 9 && (
+          <Button
+            variant="outline"
+            onClick={() => setPage(page + 1)}
+            className="my-6 cursor-pointer"
+          >
+            Показать еще...
+          </Button>
+        )}
       </div>
-    </div>
+    </AnimationWrapper>
   );
 };
 

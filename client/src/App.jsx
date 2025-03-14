@@ -4,6 +4,9 @@ import HomePage from "./pages/HomePage";
 import BlogPage from "./pages/BlogPage";
 import RegionPage from "./pages/RegionPage";
 import AllBlogs from "./pages/AllBlogs";
+import AdminLayout from "./components/admin/AdminLayout";
+import PanelPage from "./pages/admin/PanelPage";
+import NewBlogPage from "./pages/admin/NewBlogPage";
 function App() {
   return (
     <>
@@ -13,8 +16,10 @@ function App() {
           <Route path="/blog" element={<AllBlogs />} />
           <Route path="/blog/:slug" element={<BlogPage />} />
           <Route path="/blog/regions/:slug" element={<RegionPage />} />
-          {/* <Route path="/user/profile" element={<ProfilePage />} />
-          <Route path="/blog/:slug" element={<BlogPage />} /> */}
+        </Route>
+        <Route path="/admin/" element={<AdminLayout />}>
+          <Route index element={<PanelPage />} />
+          <Route path="create-post" element={<NewBlogPage />} />
         </Route>
       </Routes>
     </>

@@ -8,14 +8,13 @@ import {
   CardFooter,
 } from "../ui/card";
 import { Link } from "react-router-dom";
+import DateComponent from "@/helpers/DateHelper";
+import { FaRegEye } from "react-icons/fa";
 
 const BlogCard = ({ blog }) => {
   return (
-    <Link
-      to={`/blog/${blog.url}`}
-      className="hover:scale-102 transition-all duration-300 ease-in-out hover:shadow-lg hover:shadow-gray-500/50"
-    >
-      <Card>
+    <Link to={`/blog/${blog.url}`} className="">
+      <Card className="hover:scale-102 duration-300 transition-all hover:shadow-lg">
         <CardHeader>
           <CardTitle className="h-[50px] line-clamp-3">{blog.title}</CardTitle>
           <hr className="w-64 mx-auto text-center border border-gray-100 h-0.5" />
@@ -29,9 +28,17 @@ const BlogCard = ({ blog }) => {
             alt={blog.title}
           />
         </CardContent>
-        <CardFooter>
-          <p></p>
-        </CardFooter>
+        <hr className="w-64 mx-auto text-center border border-gray-100 h-0.5" />
+
+        <div className="flex flex-row justify-between items-center mx-4">
+          <div className="text-gray-500 text-sm">
+            <DateComponent date={blog.createdDate} />
+          </div>
+          <div className="flex items-center gap-2 text-gray-500 text-sm">
+            <FaRegEye className="" />
+            {blog.views}
+          </div>
+        </div>
       </Card>
     </Link>
   );

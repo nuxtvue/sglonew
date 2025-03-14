@@ -12,25 +12,30 @@ import { Button } from "../ui/button";
 import { toast } from "sonner";
 
 import axios from "axios";
+import useUserStore from "@/store/user";
 
-const RegisterDialog = ({ showRegisterDialog, setShowRegisterDialog }) => {
+const LoginDialog = ({ showLoginDialog, setShowLoginDialog }) => {
   const [formData, setFormData] = useState({
+    username: "",
     login: "",
-    email: "",
     password: "",
   });
-  console.log(showRegisterDialog);
+  const { user, login } = useUserStore();
+  console.log(user);
+
   const submitRegisterForm = async (e) => {
     e.preventDefault();
 
     try {
       const res = await axios.post(
-        "http://localhost:3000/api/user/register",
-        formData
+        "http://localhost:3000/api/user/login",
+        formData,
+        { withCredentials: true }
       );
       if (res.data.success) {
         toast.success(res.data.message);
-        setShowRegisterDialog(false);
+        login(res.data.user);
+        setShowLoginDialog(false);
       }
     } catch (error) {
       console.log(error);
@@ -38,32 +43,20 @@ const RegisterDialog = ({ showRegisterDialog, setShowRegisterDialog }) => {
   };
   return (
     <div>
-      <Dialog open={showRegisterDialog} onOpenChange={setShowRegisterDialog}>
+      <Dialog open={showLoginDialog} onOpenChange={setShowLoginDialog}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Страница регистрации</DialogTitle>
-            <DialogDescription>
-              Заполните поля для регистрации на сайте
-            </DialogDescription>
+            <DialogTitle>Страница входа</DialogTitle>
+            <DialogDescription>Вход на сайт</DialogDescription>
             <form className="flex flex-col space-y-4">
-              <Label className="text-md">Логин</Label>
+              <Label>Login</Label>
               <Input
                 onChange={(e) =>
                   setFormData({ ...formData, login: e.target.value })
                 }
-                className=""
                 type="text"
                 name="login"
                 autoComplete="login"
-              />
-              <Label>Email</Label>
-              <Input
-                onChange={(e) =>
-                  setFormData({ ...formData, email: e.target.value })
-                }
-                type="email"
-                name="email"
-                autoComplete="email"
               />
               <Label className="text-md">Пароль</Label>
               <Input
@@ -78,7 +71,7 @@ const RegisterDialog = ({ showRegisterDialog, setShowRegisterDialog }) => {
                 onClick={(e) => submitRegisterForm(e)}
                 className="mt-4 w-full text-lg cursor-pointer"
               >
-                Зарегистрироваться
+                Войти
               </Button>
             </form>
           </DialogHeader>
@@ -88,4 +81,4 @@ const RegisterDialog = ({ showRegisterDialog, setShowRegisterDialog }) => {
   );
 };
 
-export default RegisterDialog;
+export default LoginDialog;
