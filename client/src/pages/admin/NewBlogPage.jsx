@@ -19,6 +19,7 @@ import { categories } from "@/helpers/categories";
 import { Check } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import axios from "axios";
+import { toast } from "sonner";
 const NewBlogPage = () => {
   const [editor, setEditor] = useState();
   const [previewImg, setPreviewImg] = useState([]);
@@ -81,7 +82,7 @@ const NewBlogPage = () => {
     images.forEach((file) => {
       formDataToSend.append("files", file); // "files" - это имя поля для файлов
     });
-
+    console.log(formDataToSend.get("content"));
     try {
       const response = await axios.post("/api/blog/newblog", formDataToSend, {
         withCredentials: true,
@@ -89,12 +90,12 @@ const NewBlogPage = () => {
           "Content-Type": "multipart/form-data", // Указываем правильный Content-Type
         },
       });
-
-      console.log(response.data);
-      alert("Новость успешно создана!");
+      if (response.data.success) {
+        toast.success(response.data.message);
+      }
     } catch (error) {
       console.error(error);
-      alert("Произошла ошибка при создании новости.");
+      toast.error(error.response.data.message);
     }
   };
   return (

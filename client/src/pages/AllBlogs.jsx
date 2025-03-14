@@ -2,6 +2,7 @@ import BlogCard from "@/components/blog/BlogCard";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 
 const AllBlogs = () => {
   const [blogs, setBlogs] = useState([]);
@@ -23,7 +24,11 @@ const AllBlogs = () => {
     fetchBlogs();
   }, [page]);
   return (
-    <div>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1.5 }}
+    >
       <h1 className="text-center text-lg font-semibold my-6">Все новости</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {blogs.map((blog) => (
@@ -39,7 +44,7 @@ const AllBlogs = () => {
           Показать еще...
         </Button>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

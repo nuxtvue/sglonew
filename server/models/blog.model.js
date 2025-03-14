@@ -9,7 +9,7 @@ const blogSchema = new mongoose.Schema(
     },
     h1: {
       type: String,
-      required: true,
+      unique: true,
     },
     banner: {
       type: Boolean,
@@ -18,11 +18,9 @@ const blogSchema = new mongoose.Schema(
     description: {
       type: String,
       required: true,
-      unique: true,
     },
     introtext: {
       type: String,
-      required: true,
     },
     content: {
       type: Array,
@@ -57,6 +55,10 @@ const blogSchema = new mongoose.Schema(
         ref: "User",
       },
     ],
+    createdDate: {
+      type: Date,
+      default: Date.now,
+    },
     dislikes: [
       {
         type: mongoose.Schema.Types.ObjectId,

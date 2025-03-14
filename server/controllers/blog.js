@@ -4,6 +4,8 @@ import path from "path";
 import sharp from "sharp";
 import { unlink } from "fs/promises";
 import { nanoid } from "nanoid";
+import { sharpImage } from "../middlewares/sharp.js";
+import { translit } from "./../utils/translit.js";
 
 export const getBlogByRegion = async (req, res) => {
   const { slug } = req.params;
@@ -49,37 +51,67 @@ export const getAllBlogs = async (req, res) => {
     console.log(error);
   }
 };
-const dir = "./static/optimized";
-if (!fs.existsSync(dir)) {
-  fs.mkdirSync(dir);
-}
 
 export const createBlog = async (req, res) => {
   try {
+    let { title, description, region, category, banner, content } = req.body;
     const files = req.files; // Получаем файлы из запроса
     if (!files || files.length === 0) {
       return res.status(400).json({ message: "Файлы не были загружены." });
     }
-    const optimizedFiles = [];
-    for (const file of files) {
-      const optimizedFilePath = path.join(
-        dir,
-        `${Date.now()}-${file.originalname}`
-      );
-      await sharp(file.buffer)
-        .resize(800, 600, {
-          fit: "contain",
-          background: { r: 255, g: 255, b: 255, alpha: 500 },
-        })
-        .toFormat("webp")
-        .webp({ quality: 80 })
-        .toFile(optimizedFilePath);
+    if (!title || !description || !content || !region || !category) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Вы заполнили не все поля" });
+    }
+    if (!category) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Вы не выбрали категорию" });
+    }
 
-      optimizedFiles.push({
-        originalName: file.originalname,
-        optimizedPath: `/optimized/${path.basename(optimizedFilePath)}`,
+    const slug =
+      translit(title)
+        .replace(/[^a-zA-Z0-9]/g, " ")
+        .replace(/\s+/g, "-")
+        .toLowerCase()
+        .trim() +
+      "-" +
+      nanoid(2);
+    const findBlogBySlug = await Blog.findOne({ slug: slug });
+    const findBlogByTitle = await Blog.findOne({ title: title });
+    if (findBlogBySlug || findBlogByTitle) {
+      return res.status(400).json({
+        success: false,
+        message: "Блог с таким заголовком уже существует, поменяйте заголовок",
       });
     }
+
+    const optimizedFiles = await sharpImage(files); // Обрабатываем файлы
+    content = JSON.parse(req.body.content);
+    const newBlog = new Blog({
+      title,
+      h1: title,
+      url: slug.toLowerCase(),
+      description,
+      coverImageName: optimizedFiles,
+      content,
+      region,
+      banner,
+      category,
+      author: req.id,
+    });
+    await newBlog.save();
+    res.status(201).json({ success: true, message: "Блог успешно создан" });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getBannerBlogs = async (req, res) => {
+  try {
+    const blog = await Blog.find({ banner: true });
+    res.status(200).json(blog);
   } catch (error) {
     console.log(error);
   }
