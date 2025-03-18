@@ -4,6 +4,7 @@ import { Outlet } from "react-router-dom";
 import LeftColumn from "../blog/LeftColumn";
 
 import { Toaster } from "@/components/ui/sonner";
+import Footer from "../blog/Footer";
 
 const BlogLayout = () => {
   return (
@@ -29,6 +30,7 @@ const BlogLayout = () => {
       </div>
 
       {/* Footer */}
+      <Footer />
       <Toaster />
     </div>
   );

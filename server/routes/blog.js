@@ -2,11 +2,13 @@ import express from "express";
 import isAuthenticated from "./../middlewares/isAuthenticated.js";
 import upload from "./../middlewares/multer.js";
 import {
+  countDocsByTag,
   createBlog,
   getAllBlogs,
   getBannerBlogs,
   getBlogByRegion,
   getBlogByUrl,
+  searchBlogs,
 } from "../controllers/blog.js";
 
 const router = express.Router();
@@ -16,5 +18,7 @@ router.get("/getblogbyurl/:slug", getBlogByUrl);
 router.get("/getallblogs", getAllBlogs);
 router.get("/banner", getBannerBlogs);
 router.post("/newblog", upload.array("files", 15), isAuthenticated, createBlog);
+router.get("/search/:query", searchBlogs);
+router.get("/countbytags", countDocsByTag);
 
 export default router;

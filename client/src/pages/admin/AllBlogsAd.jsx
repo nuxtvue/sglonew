@@ -1,14 +1,13 @@
-import BlogCard from "@/components/blog/BlogCard";
+import BlogCardAd from "@/components/admin/BlogCardAd";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
 
-const AllBlogs = () => {
+const AllBlogsAd = () => {
   const [blogs, setBlogs] = useState([]);
   const [page, setPage] = useState(1);
   useEffect(() => {
-    const fetchBlogs = async () => {
+    const fetchAllBlogs = async () => {
       try {
         const res = await axios.get("/api/blog/getallblogs", {
           params: {
@@ -21,23 +20,14 @@ const AllBlogs = () => {
         console.log(err);
       }
     };
-    fetchBlogs();
+    fetchAllBlogs();
   }, [page]);
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 1.5 }}
-    >
-      <title>Все статьи Союза женщин Липецкой области</title>
-      <meta
-        name="description"
-        content="Все статьи Союза женщин Липецкой области"
-      />
+    <div className="w-full">
       <h1 className="text-center text-lg font-semibold my-6">Все новости</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {blogs.map((blog) => (
-          <BlogCard key={blog._id} blog={blog} />
+          <BlogCardAd key={blog._id} blog={blog} />
         ))}
       </div>
       <div className="text-center">
@@ -49,8 +39,8 @@ const AllBlogs = () => {
           Показать еще...
         </Button>
       </div>
-    </motion.div>
+    </div>
   );
 };
 
-export default AllBlogs;
+export default AllBlogsAd;

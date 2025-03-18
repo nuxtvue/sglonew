@@ -10,17 +10,30 @@ import { translit } from "./../utils/translit.js";
 export const getBlogByRegion = async (req, res) => {
   const { slug } = req.params;
   let { page } = req.query;
+
   let maxLimit = 9;
   const skip = (page - 1) * maxLimit;
+  let query;
   try {
-    const blogs = await Blog.find({ region: slug })
+    let query = {};
+    let startDate = req.query.startDate;
+    let endDate = req.query.endDate;
+    query.region = slug;
+    if (startDate && endDate) {
+      query.createdDate = {
+        $gte: new Date(startDate),
+        $lte: new Date(endDate),
+      };
+    }
+
+    const countBlogs = await Blog.countDocuments(query);
+    const blogs = await Blog.find(query)
       .skip(skip) // Пропустить первые N документов
       .limit(maxLimit) // Ограничить количество документов
       .sort({ createdDate: -1 })
       .exec();
     console.log(blogs);
-
-    res.status(200).json(blogs);
+    res.status(200).json({ blogs, countBlogs });
   } catch (error) {
     console.log(error);
   }
@@ -30,6 +43,8 @@ export const getBlogByUrl = async (req, res) => {
   const { slug } = req.params;
   try {
     const blog = await Blog.findOne({ url: slug });
+    blog.views = blog.views + 1;
+    blog.save();
     res.status(200).json(blog);
   } catch (error) {
     console.log(error);
@@ -98,7 +113,7 @@ export const createBlog = async (req, res) => {
       content,
       region,
       banner,
-      category,
+      tag: category,
       author: req.id,
     });
     await newBlog.save();
@@ -112,6 +127,30 @@ export const getBannerBlogs = async (req, res) => {
   try {
     const blog = await Blog.find({ banner: true });
     res.status(200).json(blog);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const searchBlogs = async (req, res) => {
+  const { query } = req.params;
+  try {
+    const blogs = await Blog.find({
+      title: { $regex: query, $options: "i" },
+    });
+    console.log(blogs);
+    res.status(200).json(blogs);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const countDocsByTag = async (req, res) => {
+  try {
+    const tags = await Blog.aggregate([
+      { $group: { _id: "$region", count: { $sum: 1 } } },
+    ]).sort({ count: -1 });
+    res.status(200).json(tags);
   } catch (error) {
     console.log(error);
   }

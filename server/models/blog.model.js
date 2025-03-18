@@ -31,6 +31,9 @@ const blogSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    tag: {
+      type: String,
+    },
 
     coverImageName: {
       type: Array,

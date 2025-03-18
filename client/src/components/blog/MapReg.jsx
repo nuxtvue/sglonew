@@ -461,4 +461,4 @@ const MapReg = () => {
   );
 };
 
-export default MapReg;
+export default React.memo(MapReg);

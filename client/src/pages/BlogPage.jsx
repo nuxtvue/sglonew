@@ -44,8 +44,10 @@ const BlogPage = () => {
   return (
     <AnimationWrapper>
       <div>
+        <title>{blog.title}</title>
+        <meta name="description" content={blog.description} />
         <h1 className="text-lg font-semibold text-center my-4">{blog.title}</h1>
-        <article>
+        <article className="mb-8">
           <img
             src={images[0]?.original}
             loading="lazy"
