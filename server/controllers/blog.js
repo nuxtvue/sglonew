@@ -179,3 +179,14 @@ export const deleteBlog = async (req, res) => {
     console.log(error);
   }
 };
+
+export const countDocsByCategory = async (req, res) => {
+  try {
+    const tags = await Blog.aggregate([
+      { $group: { _id: "$tag", count: { $sum: 1 } } },
+    ]).sort({ count: -1 });
+    res.status(200).json(tags);
+  } catch (error) {
+    console.log(error);
+  }
+};
