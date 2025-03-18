@@ -62,6 +62,47 @@ export const login = async (req, res) => {
   });
 };
 
+export const getAllUsers = async (req, res) => {
+  const users = await User.find().select("-password").sort({ login: 1 });
+  res.json(users);
+};
+
 export const logout = async (req, res) => {
   res.clearCookie("token").json({ success: true, message: "Вы успешно вышли" });
+};
+
+export const makeAdmin = async (req, res) => {
+  try {
+    const isAdmin = await User.findById(req.id);
+    const { id } = req.params;
+    if (isAdmin.role === "admin") {
+      const user = await User.findById(id);
+      if (user.role === "admin") {
+        user.role = "user";
+      } else {
+        user.role = "admin";
+      }
+      await user.save();
+      res.json(user);
+    } else {
+      res.status(403).json({ message: "Недостаточно прав" });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const deleteUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const isAdmin = await User.findById(req.id);
+    if (isAdmin.role === "admin") {
+      const user = await User.findByIdAndDelete(id);
+      res.json(user);
+    } else {
+      res.status(403).json({ message: "Недостаточно прав" });
+    }
+  } catch (error) {
+    console.log(error);
+  }
 };

@@ -10,6 +10,8 @@ import NewBlogPage from "./pages/admin/NewBlogPage";
 import AllBlogsAd from "./pages/admin/AllBlogsAd";
 import AllBlogs from "./pages/AllBlogs";
 import EditBlogPage from "./pages/admin/EditBlogPage";
+import AllUsersAd from "./pages/admin/AllUsersAd";
+import NotFoundPage from "./pages/NotFound";
 function App() {
   return (
     <>
@@ -19,11 +21,14 @@ function App() {
           <Route path="/blog" element={<AllBlogs />} />
           <Route path="/blog/:slug" element={<BlogPage />} />
           <Route path="/blog/regions/:slug" element={<RegionPage />} />
+          <Route path="*" element={<NotFoundPage />} />
+          <Route path="/404" element={<NotFoundPage />} />
         </Route>
         <Route path="/admin/" element={<AdminLayout />}>
           <Route index element={<PanelPage />} />
           <Route path="create-post" element={<NewBlogPage />} />
           <Route path="allblogs" element={<AllBlogsAd />} />
+          <Route path="allusers" element={<AllUsersAd />} />
           <Route path="edit/:slug" element={<EditBlogPage />} />
         </Route>
       </Routes>

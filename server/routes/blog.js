@@ -4,6 +4,7 @@ import upload from "./../middlewares/multer.js";
 import {
   countDocsByTag,
   createBlog,
+  deleteBlog,
   getAllBlogs,
   getBannerBlogs,
   getBlogByRegion,
@@ -20,5 +21,6 @@ router.get("/banner", getBannerBlogs);
 router.post("/newblog", upload.array("files", 15), isAuthenticated, createBlog);
 router.get("/search/:query", searchBlogs);
 router.get("/countbytags", countDocsByTag);
+router.delete("/deleteblog/:id", isAuthenticated, deleteBlog);
 
 export default router;

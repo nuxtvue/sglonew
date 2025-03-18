@@ -6,6 +6,7 @@ import { unlink } from "fs/promises";
 import { nanoid } from "nanoid";
 import { sharpImage } from "../middlewares/sharp.js";
 import { translit } from "./../utils/translit.js";
+import { User } from "../models/user.model.js";
 
 export const getBlogByRegion = async (req, res) => {
   const { slug } = req.params;
@@ -43,9 +44,12 @@ export const getBlogByUrl = async (req, res) => {
   const { slug } = req.params;
   try {
     const blog = await Blog.findOne({ url: slug });
-    blog.views = blog.views + 1;
-    blog.save();
-    res.status(200).json(blog);
+    if (blog) {
+      blog.save();
+      res.status(200).json(blog);
+    } else {
+      res.status(404).json({ message: "Блог не найден" });
+    }
   } catch (error) {
     console.log(error);
   }
@@ -151,6 +155,26 @@ export const countDocsByTag = async (req, res) => {
       { $group: { _id: "$region", count: { $sum: 1 } } },
     ]).sort({ count: -1 });
     res.status(200).json(tags);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const deleteBlog = async (req, res) => {
+  try {
+    let isAdmin = await User.findById(req.id);
+    if (isAdmin.role !== "admin")
+      return res.status(403).json({ message: "Недостаточно прав" });
+    const { id } = req.params;
+    const blog = await Blog.findByIdAndDelete(id);
+    if (blog) {
+      blog.coverImageName.forEach((file) => {
+        fs.unlink(file.path, (err) => {
+          if (err) console.log(err);
+        });
+      });
+    }
+    res.status(200).json({ message: "Блог успешно удален", blog });
   } catch (error) {
     console.log(error);
   }

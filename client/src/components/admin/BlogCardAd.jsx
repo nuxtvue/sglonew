@@ -10,11 +10,32 @@ import {
 import { Link } from "react-router-dom";
 import DateComponent from "@/helpers/DateHelper";
 import { FaRegEye } from "react-icons/fa";
+import { FaRegTrashAlt } from "react-icons/fa";
+import axios from "axios";
+import { toast } from "sonner";
 
 const BlogCardAd = ({ blog }) => {
+  const deleteBlog = async (e, id) => {
+    e.preventDefault();
+    try {
+      let pr = window.confirm("Вы действительно хотите удалить этот пост?");
+      if (!pr) return;
+      const res = await axios.delete(`/api/blog/deleteblog/${id}`, {
+        withCredentials: true,
+      });
+      if (res.data) toast.success(res.data.message);
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
-    <Link to={`/admin/edit/${blog.url}`} className="">
-      <Card className="hover:scale-102 duration-300 transition-all hover:shadow-lg">
+    <Card className="hover:scale-102 duration-300 transition-all hover:shadow-lg relative">
+      <FaRegTrashAlt
+        className="absolute right-4 top-4 text-red-500"
+        onClick={(e) => deleteBlog(e, blog._id)}
+      />
+      <Link to={`/admin/edit/${blog.url}`} className="">
         <CardHeader>
           <CardTitle className="h-[50px] line-clamp-3">{blog.title}</CardTitle>
           <hr className="w-64 mx-auto text-center border border-gray-100 h-0.5" />
@@ -39,8 +60,8 @@ const BlogCardAd = ({ blog }) => {
             {blog.views}
           </div>
         </div>
-      </Card>
-    </Link>
+      </Link>
+    </Card>
   );
 };
 

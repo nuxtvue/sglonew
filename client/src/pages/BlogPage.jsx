@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ImageGallery from "react-image-gallery";
 // import stylesheet if you're not already using CSS @import
 import "react-image-gallery/styles/css/image-gallery.css";
@@ -9,15 +9,20 @@ import BlogContent from "@/components/blog/BlogContent";
 
 const BlogPage = () => {
   const params = useParams();
-  console.log(params);
+
   const [blog, setBlog] = useState({});
   const [images, setImages] = useState([]);
   const [content, setContent] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchBlogByUrl = async () => {
       try {
         const res = await axios.get(`/api/blog/getblogbyurl/${params.slug}`);
+        console.log(res.status);
+        if (res.status === 404) {
+          navigate("/404", { replace: true });
+        }
         if (res.status === 200) {
           setBlog(res.data);
           console.log(res.data.content[0]);
@@ -34,9 +39,9 @@ const BlogPage = () => {
 
           setImages(imgs);
         }
-        console.log(res);
       } catch (err) {
         console.log(err);
+        navigate("/404", { replace: true });
       }
     };
     fetchBlogByUrl();

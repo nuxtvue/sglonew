@@ -20,6 +20,7 @@ import SkeletonLoader from "@/components/blog/SkeletonLoader";
 
 const RegionPage = () => {
   const params = useParams();
+  console.log(params);
   const [blogs, setBlogs] = useState([]);
   const [page, setPage] = useState(1);
   const [count, setCount] = useState(0);
@@ -97,7 +98,11 @@ const RegionPage = () => {
   }, [page, params.slug]);
 
   return (
-    <AnimationWrapper>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1 }}
+    >
       <title>{"Новости Союза женщин " + sklonRegion}</title>
       <div className="text-center relative">
         <h1 className="text-center text-lg font-semibold mb-8">{region}</h1>
@@ -170,7 +175,7 @@ const RegionPage = () => {
               setPage(1);
               fetchBlogsByRegion();
             }}
-            classname={loading ? "disabled" : ""}
+            className={loading ? "disabled" : ""}
           >
             {loading && <FaSpinner className="animate-spin mr-2" />}
             Найти
@@ -203,7 +208,7 @@ const RegionPage = () => {
           </Button>
         )}
       </div>
-    </AnimationWrapper>
+    </motion.div>
   );
 };
 

@@ -3,7 +3,6 @@ import MapReg from "@/components/blog/MapReg";
 import axios from "axios";
 
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import BlogCard from "@/components/blog/BlogCard";
 const CarouselMain = React.lazy(() =>
