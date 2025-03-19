@@ -10,16 +10,15 @@ import { User } from "../models/user.model.js";
 
 export const getBlogByRegion = async (req, res) => {
   const { slug } = req.params;
-  let { page } = req.query;
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 9;
+  const skip = (page - 1) * limit;
 
-  let maxLimit = 9;
-  const skip = (page - 1) * maxLimit;
-  let query;
   try {
-    let query = {};
+    let query = { region: slug };
     let startDate = req.query.startDate;
     let endDate = req.query.endDate;
-    query.region = slug;
+
     if (startDate && endDate) {
       query.createdDate = {
         $gte: new Date(startDate),
@@ -27,16 +26,27 @@ export const getBlogByRegion = async (req, res) => {
       };
     }
 
-    const countBlogs = await Blog.countDocuments(query);
+    const total = await Blog.countDocuments(query);
     const blogs = await Blog.find(query)
-      .skip(skip) // Пропустить первые N документов
-      .limit(maxLimit) // Ограничить количество документов
       .sort({ createdDate: -1 })
+      .skip(skip)
+      .limit(limit)
       .exec();
-    console.log(blogs);
-    res.status(200).json({ blogs, countBlogs });
+
+    res.status(200).json({
+      success: true,
+      posts: blogs,
+      total,
+      currentPage: page,
+      totalPages: Math.ceil(total / limit),
+    });
   } catch (error) {
     console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "Ошибка при получении постов",
+      error: error.message,
+    });
   }
 };
 
@@ -45,7 +55,8 @@ export const getBlogByUrl = async (req, res) => {
   try {
     const blog = await Blog.findOne({ url: slug });
     if (blog) {
-      blog.save();
+      blog.views++;
+      await blog.save();
       res.status(200).json(blog);
     } else {
       res.status(404).json({ message: "Блог не найден" });
@@ -56,7 +67,7 @@ export const getBlogByUrl = async (req, res) => {
 };
 export const getAllBlogs = async (req, res) => {
   let { page } = req.query;
-  let maxLimit = 9;
+  let maxLimit = 12;
   const skip = (page - 1) * maxLimit;
   try {
     const blogs = await Blog.find()
@@ -188,5 +199,62 @@ export const countDocsByCategory = async (req, res) => {
     res.status(200).json(tags);
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const getBlogsByCategory = async (req, res) => {
+  const { category } = req.params;
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 9;
+  const skip = (page - 1) * limit;
+
+  try {
+    const total = await Blog.countDocuments({ tag: category });
+    const blogs = await Blog.find({ tag: category })
+      .sort({ createdDate: -1 })
+      .skip(skip)
+      .limit(limit)
+      .exec();
+
+    res.status(200).json({
+      success: true,
+      posts: blogs,
+      total,
+      currentPage: page,
+      totalPages: Math.ceil(total / limit),
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "Ошибка при получении постов",
+      error: error.message,
+    });
+  }
+};
+
+export const countByTags = async (req, res) => {
+  try {
+    const stats = await Blog.aggregate([
+      {
+        $group: {
+          _id: "$region",
+          count: { $sum: 1 },
+        },
+      },
+      {
+        $match: {
+          _id: { $ne: null }, // Исключаем записи без региона
+        },
+      },
+      {
+        $sort: { count: -1 },
+      },
+    ]);
+
+    res.status(200).json(stats);
+  } catch (error) {
+    console.error("Ошибка при получении статистики:", error);
+    res.status(500).json({ message: "Ошибка при получении статистики" });
   }
 };

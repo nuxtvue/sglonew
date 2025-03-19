@@ -8,6 +8,8 @@ import cookieParser from "cookie-parser";
 import sharp from "sharp";
 import multer from "multer";
 import path from "path";
+import commentRoute from "./routes/comment.js";
+import likeRoute from "./routes/like.js";
 
 dotenv.config();
 
@@ -36,5 +38,7 @@ app.listen(3000, () => {
 
 app.use("/api/user", userRoute);
 app.use("/api/blog", blogRoute);
+app.use("/api/comments", commentRoute);
+app.use("/api/likes", likeRoute);
 
 export default app;

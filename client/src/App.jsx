@@ -12,6 +12,7 @@ import AllBlogs from "./pages/AllBlogs";
 import EditBlogPage from "./pages/admin/EditBlogPage";
 import AllUsersAd from "./pages/admin/AllUsersAd";
 import NotFoundPage from "./pages/NotFound";
+import CategoryPage from "./pages/CategoryPage";
 function App() {
   return (
     <>
@@ -20,6 +21,7 @@ function App() {
           <Route index element={<HomePage />} />
           <Route path="/blog" element={<AllBlogs />} />
           <Route path="/blog/:slug" element={<BlogPage />} />
+          <Route path="/category/:slug" element={<CategoryPage />} />
           <Route path="/blog/regions/:slug" element={<RegionPage />} />
           <Route path="*" element={<NotFoundPage />} />
           <Route path="/404" element={<NotFoundPage />} />

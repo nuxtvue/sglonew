@@ -38,6 +38,7 @@ const LoginDialog = ({ showLoginDialog, setShowLoginDialog }) => {
         setShowLoginDialog(false);
       }
     } catch (error) {
+      toast.error(error.response.data.message);
       console.log(error);
     }
   };

@@ -5,6 +5,7 @@ import { FaOdnoklassnikiSquare } from "react-icons/fa";
 import { MdOutlineEmail } from "react-icons/md";
 import { MdOutlinePhone } from "react-icons/md";
 import RatingRegions from "./RatingRegions";
+import CategoryList from "./CategoryList";
 
 const LeftColumn = () => {
   return (
@@ -65,6 +66,8 @@ const LeftColumn = () => {
       </div>
       <Separator className="w-full h-[1px] bg-gray-200" />
       <RatingRegions />
+      <Separator className="w-full h-[1px] bg-gray-200" />
+      <CategoryList />
     </div>
   );
 };

@@ -36,11 +36,15 @@ const HomePage = () => {
         whileInView={{ opacity: 1, x: 0 }}
         transition={{ duration: 1 }}
       >
-        <h1 className="text-center text-xl">Карта районов</h1>
+        <h1 className="text-center text-xl [text-shadow:_0_8px_8px_rgb(99_102_241_/_0.8)]">
+          Карта районов
+        </h1>
         <MapReg />
       </motion.div>
       <div>
-        <h2 className="text-center text-xl my-4">Последние новости</h2>
+        <h2 className="text-center text-xl my-4 [text-shadow:_0_8px_8px_rgb(99_102_241_/_0.8)]">
+          Последние новости
+        </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {lastBlogs.map(
             (blog, index) =>

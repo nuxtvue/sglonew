@@ -50,7 +50,7 @@ const BlogContent = ({ block }) => {
     return (
       <p
         dangerouslySetInnerHTML={{ __html: data.text }}
-        className="text-xl leading-8 md:text-md my-4"
+        className="text-md leading-8 md:text-md my-4 indent-8"
       ></p>
     );
   }

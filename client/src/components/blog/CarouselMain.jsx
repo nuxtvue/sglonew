@@ -72,7 +72,7 @@ const CarouselMain = () => {
                   <OptimizedImage
                     src={blog.coverImageName[0].path}
                     alt={blog.title}
-                    className="object-cover h-full w-full rounded-md"
+                    className="object-cover w-full h-[350px] rounded-md"
                   />
                 </Link>
                 <p className="absolute  bottom-10 mx-4 transform  text-white p-2 text-lg font-semibold bg-blue-500/80 z-50 rounded-md">

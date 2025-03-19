@@ -6,6 +6,7 @@ import {
   logout,
   makeAdmin,
   register,
+  getUserRegistrationStats,
 } from "../controllers/user.js";
 import isAuthenticated from "../middlewares/isAuthenticated.js";
 
@@ -17,5 +18,6 @@ router.get("/logout", logout);
 router.get("/getallusers", getAllUsers);
 router.put("/makeadmin/:id", isAuthenticated, makeAdmin);
 router.delete("/deleteuser/:id", isAuthenticated, deleteUser);
+router.get("/registrationstats", getUserRegistrationStats);
 
 export default router;

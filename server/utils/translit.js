@@ -68,7 +68,6 @@ export const translit = (word) => {
     Ю: "Yu",
     Я: "Ya",
     " ": "-",
-    "  ": "",
     "?": "",
     "!": "",
     ".": "",
@@ -78,7 +77,6 @@ export const translit = (word) => {
     ")": "",
     "/": "",
     "\\": "",
-    No: "",
     ";": "",
     ":": "",
     "“": "",
@@ -91,12 +89,14 @@ export const translit = (word) => {
   };
 
   for (let i = 0; i < word.length; ++i) {
-    if (converter[word[i]] == undefined) {
-      answer = answer + word[i];
-    } else {
-      answer = answer + converter[word[i]];
-    }
+    answer += converter[word[i]] !== undefined ? converter[word[i]] : word[i];
   }
+
+  // Удаляем лишние дефисы и пробелы
+  answer = answer
+    .replace(/--+/g, "-") // Заменяем несколько дефисов на один
+    .replace(/^-+|-+$/g, "") // Удаляем дефисы в начале и конце
+    .toLowerCase(); // Приводим к нижнему регистру
 
   return answer;
 };

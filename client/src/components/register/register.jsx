@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -10,7 +10,6 @@ import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { toast } from "sonner";
-
 import axios from "axios";
 
 const RegisterDialog = ({ showRegisterDialog, setShowRegisterDialog }) => {
@@ -18,10 +17,57 @@ const RegisterDialog = ({ showRegisterDialog, setShowRegisterDialog }) => {
     login: "",
     email: "",
     password: "",
+    captcha: "",
   });
-  console.log(showRegisterDialog);
+
+  const [captcha, setCaptcha] = useState({
+    num1: 0,
+    num2: 0,
+    operator: "+",
+    answer: 0,
+  });
+
+  // Генерация новой капчи
+  const generateCaptcha = () => {
+    const num1 = Math.floor(Math.random() * 10);
+    const num2 = Math.floor(Math.random() * 10);
+    const operators = ["+", "-", "*"];
+    const operator = operators[Math.floor(Math.random() * operators.length)];
+
+    let answer;
+    switch (operator) {
+      case "+":
+        answer = num1 + num2;
+        break;
+      case "-":
+        answer = num1 - num2;
+        break;
+      case "*":
+        answer = num1 * num2;
+        break;
+      default:
+        answer = 0;
+    }
+
+    setCaptcha({ num1, num2, operator, answer });
+  };
+
+  useEffect(() => {
+    if (showRegisterDialog) {
+      generateCaptcha();
+    }
+  }, [showRegisterDialog]);
+
   const submitRegisterForm = async (e) => {
     e.preventDefault();
+
+    // Проверка капчи
+    if (parseInt(formData.captcha) !== captcha.answer) {
+      toast.error("Неверный ответ в капче!");
+      generateCaptcha(); // Генерируем новую капчу
+      setFormData({ ...formData, captcha: "" }); // Очищаем поле капчи
+      return;
+    }
 
     try {
       const res = await axios.post(
@@ -34,8 +80,10 @@ const RegisterDialog = ({ showRegisterDialog, setShowRegisterDialog }) => {
       }
     } catch (error) {
       console.log(error);
+      toast.error("Ошибка при регистрации");
     }
   };
+
   return (
     <div>
       <Dialog open={showRegisterDialog} onOpenChange={setShowRegisterDialog}>
@@ -74,6 +122,35 @@ const RegisterDialog = ({ showRegisterDialog, setShowRegisterDialog }) => {
                 name="password"
                 autoComplete="current-password"
               />
+
+              {/* Капча */}
+              <div className="space-y-2">
+                <Label className="text-md">Проверка безопасности</Label>
+                <div className="flex items-center gap-2">
+                  <div className="bg-gray-100 p-2 rounded text-lg font-semibold">
+                    {captcha.num1} {captcha.operator} {captcha.num2} = ?
+                  </div>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="icon"
+                    onClick={generateCaptcha}
+                    className="h-10 w-10"
+                  >
+                    ↻
+                  </Button>
+                </div>
+                <Input
+                  type="number"
+                  value={formData.captcha}
+                  onChange={(e) =>
+                    setFormData({ ...formData, captcha: e.target.value })
+                  }
+                  placeholder="Введите ответ"
+                  className="mt-2"
+                />
+              </div>
+
               <Button
                 onClick={(e) => submitRegisterForm(e)}
                 className="mt-4 w-full text-lg cursor-pointer"

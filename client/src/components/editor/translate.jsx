@@ -15,6 +15,8 @@ export const translate = {
       toolbar: {
         toolbox: {
           Add: "Добавить",
+          "Click to add": "Нажмите, чтобы добавить",
+          "Search for a tool": "Поиск инструмента",
         },
       },
       popover: {
@@ -43,9 +45,17 @@ export const translate = {
       Bold: "Полужирный",
       Italic: "Курсив",
       InlineCode: "Моноширинный",
-      Image: "Картинка",
+      Image: "Изображение",
       "Unordered List": "Маркированный список",
       "Ordered List": "Нумерованный список",
+      "Text Alignment": "Выравнивание текста",
+      "Font Size": "Размер шрифта",
+      "Font Family": "Шрифт",
+      Strikethrough: "Зачеркнутый",
+      Underline: "Подчеркнутый",
+      Subscript: "Нижний индекс",
+      Superscript: "Верхний индекс",
+      Embed: "Встраиваемый контент",
     },
 
     /**
@@ -67,6 +77,9 @@ export const translate = {
        */
       link: {
         "Add a link": "Вставьте ссылку",
+        "Edit link": "Редактировать ссылку",
+        "Open in new tab": "Открыть в новой вкладке",
+        "Remove link": "Удалить ссылку",
       },
       /**
        * The "stub" is an internal block tool, used to fit blocks that does not have the corresponded plugin
@@ -77,13 +90,16 @@ export const translate = {
       },
       image: {
         Caption: "Подпись",
-        "Select an Image": "Выберите файл",
+        "Select an Image": "Выберите изображение",
         "With border": "Добавить рамку",
         "Stretch image": "Растянуть",
         "With background": "Добавить подложку",
+        "Upload image": "Загрузить изображение",
+        "Image URL": "URL изображения",
       },
       code: {
-        "Enter a code": "Код",
+        "Enter a code": "Введите код",
+        "Select language": "Выберите язык",
       },
       linkTool: {
         Link: "Ссылка",
@@ -91,17 +107,24 @@ export const translate = {
         "Couldn't get this link data, try the other one":
           "Не удалось получить данные по ссылке, попробуйте другую",
         "Wrong response format from the server": "Неполадки на сервере",
+        "Enter link URL": "Введите URL ссылки",
       },
       header: {
         Header: "Заголовок",
-        "Heading 3": "Заголовок 3",
+        "Heading 1": "Заголовок 1",
         "Heading 2": "Заголовок 2",
+        "Heading 3": "Заголовок 3",
         "Heading 4": "Заголовок 4",
+        "Heading 5": "Заголовок 5",
+        "Heading 6": "Заголовок 6",
       },
       quote: {
         Quote: "Цитата",
-        "Align Left": "Выровнять слева",
-        "Align Center": "Выровнять по центру",
+        "Enter quote": "Введите цитату",
+        "Align Left": "По левому краю",
+        "Align Center": "По центру",
+        "Align Right": "По правому краю",
+        Caption: "Автор",
       },
       paragraph: {
         "Enter something": "Введите текст",
@@ -112,6 +135,21 @@ export const translate = {
         Checklist: "Чеклист",
         "Start with": "Начать с",
         "Counters type": "Тип счетчика",
+        "Add item": "Добавить пункт",
+        "Delete item": "Удалить пункт",
+      },
+      embed: {
+        "Enter a URL": "Введите URL",
+        "Embed URL": "URL для встраивания",
+        "Embed in Editor": "Встроить в редактор",
+      },
+      table: {
+        "Add column": "Добавить столбец",
+        "Add row": "Добавить строку",
+        "Delete column": "Удалить столбец",
+        "Delete row": "Удалить строку",
+        "With headings": "С заголовками",
+        "Without headings": "Без заголовков",
       },
     },
 
@@ -127,12 +165,19 @@ export const translate = {
        */
       delete: {
         Delete: "Удалить",
+        "Click to delete": "Удалить",
       },
       moveUp: {
         "Move up": "Переместить вверх",
       },
       moveDown: {
         "Move down": "Переместить вниз",
+      },
+      textAlign: {
+        "Align left": "По левому краю",
+        "Align center": "По центру",
+        "Align right": "По правому краю",
+        "Align justify": "По ширине",
       },
     },
   },

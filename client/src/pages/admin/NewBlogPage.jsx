@@ -103,25 +103,30 @@ const NewBlogPage = () => {
       <h1 className="text-center text-xl">Создание новой новости</h1>
       <form onSubmit={handleSave}>
         <Input
-          placeholder="Заголовок"
-          className="w-full my-4"
+          placeholder="Заголовок новости *"
+          className="w-full my-4 text-lg font-medium transition-all duration-300 rounded-lg border-2 hover:border-blue-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+          required
+          minLength={5}
           onChange={(e) => setFormData({ ...formData, title: e.target.value })}
         />
         <Textarea
           placeholder="Короткое описание"
           className="w-full my-4"
+          required
+          minLength={10}
           onChange={(e) =>
             setFormData({ ...formData, description: e.target.value })
           }
         />
         <div className="flex gap-4 my-8 items-center">
           <Select
+            required
             onValueChange={(value) =>
               setFormData({ ...formData, region: value })
             }
           >
             <SelectTrigger className="w-[280px] ">
-              <SelectValue placeholder="Выберите район или город" />
+              <SelectValue placeholder="Выберите район или город *" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
@@ -135,6 +140,7 @@ const NewBlogPage = () => {
             </SelectContent>
           </Select>
           <Select
+            required
             onValueChange={(value) =>
               setFormData({ ...formData, category: value })
             }
@@ -167,14 +173,38 @@ const NewBlogPage = () => {
           className="h-auto  bg-white p-2 shadow-xl rounded-lg w-full"
         ></div>
         <div>
-          <Input
-            type={"file"}
-            multiple
-            name="images"
-            accept="image/png, image/jpeg, image/jpg, image/webp"
-            className="w-full my-4"
-            onChange={(e) => handleChangeFiles(e.target)}
-          />
+          <div className="relative w-full my-4">
+            <label
+              htmlFor="file-upload"
+              className="flex items-center justify-center px-6 py-3 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-blue-500 transition-colors"
+            >
+              <svg
+                className="w-6 h-6 mr-2 text-gray-500"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                />
+              </svg>
+              <span className="text-gray-600">
+                Выберите фотографии для загрузки
+              </span>
+            </label>
+            <Input
+              id="file-upload"
+              type="file"
+              multiple
+              name="images"
+              accept="image/png, image/jpeg, image/jpg, image/webp"
+              className="hidden"
+              onChange={(e) => handleChangeFiles(e.target)}
+            />
+          </div>
           <div className="flex gap-2 flex-wrap items-start justify-start mx-auto text-center">
             {previewImg.map((item, index) => (
               <img

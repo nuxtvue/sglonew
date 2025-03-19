@@ -38,28 +38,35 @@ export const register = async (req, res) => {
 };
 
 export const login = async (req, res) => {
-  const { login, password } = req.body;
-  const user = await User.findOne({ login });
-  if (!user) {
-    return res
-      .status(400)
-      .json({ success: false, message: "Пользователь не найден" });
+  try {
+    const { login, password } = req.body;
+    const user = await User.findOne({ login });
+    if (!user) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Пользователь не найден" });
+    }
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Неверный пароль" });
+    }
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+    res.cookie("token", token, { httpOnly: true, secure: false }).json({
+      success: true,
+      message: "Успешный вход",
+      user: {
+        email: user.email,
+        role: user.role,
+        id: user._id,
+        login: user.login,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Ошибка при входе" });
   }
-  const isPasswordValid = await bcrypt.compare(password, user.password);
-  if (!isPasswordValid) {
-    return res.status(400).json({ success: false, message: "Неверный пароль" });
-  }
-  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
-  res.cookie("token", token, { httpOnly: true, secure: false }).json({
-    success: true,
-    message: "Успешный вход",
-    user: {
-      email: user.email,
-      role: user.role,
-      id: user._id,
-      login: user.login,
-    },
-  });
 };
 
 export const getAllUsers = async (req, res) => {
@@ -104,5 +111,46 @@ export const deleteUser = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const getUserRegistrationStats = async (req, res) => {
+  try {
+    const stats = await User.aggregate([
+      {
+        $group: {
+          _id: {
+            year: { $year: "$createdAt" },
+            month: { $month: "$createdAt" },
+            day: { $dayOfMonth: "$createdAt" },
+          },
+          count: { $sum: 1 },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          date: {
+            $dateToString: {
+              format: "%Y-%m-%d",
+              date: {
+                $dateFromParts: {
+                  year: "$_id.year",
+                  month: "$_id.month",
+                  day: "$_id.day",
+                },
+              },
+            },
+          },
+          count: 1,
+        },
+      },
+      { $sort: { date: 1 } },
+    ]);
+
+    res.json(stats);
+  } catch (error) {
+    console.error("Ошибка при получении статистики регистраций:", error);
+    res.status(500).json({ message: "Ошибка при получении статистики" });
   }
 };
