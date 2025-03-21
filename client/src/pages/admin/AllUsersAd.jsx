@@ -8,7 +8,7 @@ const AllUsersAd = () => {
   const [users, setUsers] = React.useState([]);
   const fetchUsers = async () => {
     try {
-      const res = await axios.get("/api/user/getallusers");
+      const res = await axios.get("/api/user/allusers");
       if (res.data) setUsers(res.data);
       console.log(res.data);
     } catch (error) {

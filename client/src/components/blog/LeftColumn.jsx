@@ -22,7 +22,9 @@ const LeftColumn = () => {
           className="rounded-md"
           loading="lazy"
         />
-        <div>Урываева Вера Ивановна</div>
+        <div className="text-center text-lg text-blue-700 mt-2">
+          Урываева Вера Ивановна
+        </div>
       </div>
       <Separator className="w-full h-[1px] bg-gray-200" />
       {/* QR КОД */}

@@ -50,7 +50,7 @@ const LoginDialog = ({ showLoginDialog, setShowLoginDialog }) => {
             <DialogTitle>Страница входа</DialogTitle>
             <DialogDescription>Вход на сайт</DialogDescription>
             <form className="flex flex-col space-y-4">
-              <Label>Login</Label>
+              <Label>Логин (любое имя)</Label>
               <Input
                 onChange={(e) =>
                   setFormData({ ...formData, login: e.target.value })

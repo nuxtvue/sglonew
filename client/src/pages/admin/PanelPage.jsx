@@ -43,6 +43,7 @@ const PanelPage = () => {
       setUserError(null);
       try {
         const response = await axios.get("/api/user/registrationstats");
+        console.log(response.data);
         if (!Array.isArray(response.data)) {
           throw new Error("Неверный формат данных");
         }

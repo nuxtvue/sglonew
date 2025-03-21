@@ -16,6 +16,7 @@ import {
 import { FaSpinner } from "react-icons/fa";
 import SkeletonLoader from "@/components/blog/SkeletonLoader";
 import Pagination from "@/components/ui/Pagination";
+import { motion } from "framer-motion";
 
 const POSTS_PER_PAGE = 12;
 
@@ -86,6 +87,7 @@ const RegionPage = () => {
           endDate: endDate ? endDate : "",
         },
       });
+      console.log(res.data);
 
       const { posts, total } = res.data;
       setBlogs(posts);
@@ -125,7 +127,12 @@ const RegionPage = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1.5 }}
+      className="container mx-auto px-4 py-8"
+    >
       <title>{"Новости Союза женщин " + sklonRegion}</title>
       <meta
         name="description"
@@ -257,7 +264,7 @@ const RegionPage = () => {
           />
         </div>
       )}
-    </div>
+    </motion.div>
   );
 };
 

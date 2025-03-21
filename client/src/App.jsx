@@ -13,11 +13,14 @@ import EditBlogPage from "./pages/admin/EditBlogPage";
 import AllUsersAd from "./pages/admin/AllUsersAd";
 import NotFoundPage from "./pages/NotFound";
 import CategoryPage from "./pages/CategoryPage";
+import AllComments from "./pages/admin/AllComments";
+import UserPage from "./pages/UserPage";
 function App() {
   return (
     <>
       <Routes>
         <Route path="/" element={<BlogLayout />}>
+          <Route path="/user/:id" element={<UserPage />} />
           <Route index element={<HomePage />} />
           <Route path="/blog" element={<AllBlogs />} />
           <Route path="/blog/:slug" element={<BlogPage />} />
@@ -30,6 +33,7 @@ function App() {
           <Route index element={<PanelPage />} />
           <Route path="create-post" element={<NewBlogPage />} />
           <Route path="allblogs" element={<AllBlogsAd />} />
+          <Route path="allcomments" element={<AllComments />} />
           <Route path="allusers" element={<AllUsersAd />} />
           <Route path="edit/:slug" element={<EditBlogPage />} />
         </Route>

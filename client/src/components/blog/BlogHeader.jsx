@@ -12,6 +12,7 @@ import LoginDialog from "../login/Login";
 import useUserStore from "@/store/user";
 import axios from "axios";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { motion } from "framer-motion";
 
 const BlogHeader = () => {
   const [showRegisterDialog, setShowRegisterDialog] = useState(false);
@@ -44,7 +45,7 @@ const BlogHeader = () => {
     }
   };
   return (
-    <div className="px-[30px] gap-4 flex flex-wrap sm:gap-6 justify-between items-center bg-pink-200/50 mt-2 rounded-lg  shadow-lg py-2 bg-[url('/mainimages/headerback.png')]  bg-right bg-cover">
+    <div className="px-[30px] gap-4 flex flex-wrap sm:gap-6 justify-between items-center bg-pink-200/50 mt-2 rounded-lg  shadow-lg py-2 bg-[url('/mainimages/headerback.png')]  bg-right bg-cover sm:flex-row flex-col">
       <Link to="/" className="flex flex-row">
         <div className="flex items-center">
           <div className="marck-script-regular text-center text-blue-700/70 text-[25px] hidden md:block">
@@ -59,47 +60,75 @@ const BlogHeader = () => {
           </div>
           <img src={logowuor} alt="" width={108} loading="lazy" />
         </div>
-      </Link>
+      </Link>{" "}
       {/*ПОИСК */}
-      <div className="flex items-center max-w-[300px] min-w-[200px] flex-1 relative">
-        <Input
-          placeholder="Поиск"
-          className="border border-gray-500/30"
-          defaultValue={searchValue}
-          onBlur={(e) => {
-            setTimeout(() => {
-              setFoundedBlogs([]);
-            }, 500);
-          }}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              handleSearch(e.target.value);
-            }
-          }}
-        />
-        {foundedBlogs.length > 0 && searchValue.length > 0 && (
-          <ul className="absolute w-[500px] bg-white z-10 rounded-md top-10 ">
-            {foundedBlogs.map((blog) => (
-              <li>
-                <Link
-                  to={`/blog/${blog.url}`}
-                  key={blog._id}
-                  className="hover:bg-gray-100 flex items-center gap-2 shadow-sm p-2 bg-gray-50 rounded-md"
-                >
-                  {" "}
-                  <img
-                    src={"/" + blog.coverImageName[0].path}
-                    alt=""
-                    width={50}
-                    className="object-cover rounded-md"
-                    loading="lazy"
-                  />
-                  {blog.title}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        )}
+      <div className="flex flex-col items-center justify-between h-24 flex-1">
+        <Link
+          to="/category/lipetsk-fm"
+          className="flex items-center justify-center font-extrabold w-[300px] text-center text-indigo-900/70"
+        >
+          <img
+            src="/mainimages/fm.jpg"
+            alt=""
+            width={45}
+            className="rounded-md"
+          />
+
+          <motion.div
+            className=""
+            initial={{ opacity: 0.6, y: 5 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: 1.5,
+              ease: "easeInOut",
+              repeat: Infinity,
+              repeatType: "reverse",
+              repeatDelay: 0.2,
+            }}
+          >
+            Женсовет48 - совместный проект ЛипецкФМ и СЖЛО
+          </motion.div>
+        </Link>
+        <div className="flex items-center  relative">
+          <Input
+            placeholder="Поиск"
+            className="border border-gray-500/30"
+            defaultValue={searchValue}
+            onBlur={(e) => {
+              setTimeout(() => {
+                setFoundedBlogs([]);
+              }, 500);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleSearch(e.target.value);
+              }
+            }}
+          />
+          {foundedBlogs.length > 0 && searchValue.length > 0 && (
+            <ul className="absolute w-[500px] bg-white z-10 rounded-md top-10 ">
+              {foundedBlogs.map((blog) => (
+                <li>
+                  <Link
+                    to={`/blog/${blog.url}`}
+                    key={blog._id}
+                    className="hover:bg-gray-100 flex items-center gap-2 shadow-sm p-2 bg-gray-50 rounded-md"
+                  >
+                    {" "}
+                    <img
+                      src={"/" + blog.coverImageName[0].path}
+                      alt=""
+                      width={50}
+                      className="object-cover rounded-md"
+                      loading="lazy"
+                    />
+                    {blog.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </div>
       <div className="flex gap-4 flex-wrap">
         <div className="bg-pink-500/10 rounded-lg text-blue-700/80 p-2 border flex items-center justify-center border-pink-500/20 hover:bg-pink-500/40 hover:text-white cursor-pointer font-semibold">
@@ -135,7 +164,7 @@ const BlogHeader = () => {
               </Link>
             )}
             {user.role === "user" && (
-              <Link to="/profile" className="">
+              <Link to={`/user/${user.id}`} className="">
                 <Avatar>
                   <AvatarImage src="https://github.com/shadcn.png" />
                   <AvatarFallback>{user.login.slice(0, 2)}</AvatarFallback>

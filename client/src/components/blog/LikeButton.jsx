@@ -44,26 +44,17 @@ const LikeButton = ({ blogId, likesArr }) => {
   };
 
   return (
-    <div className="flex items-center gap-2 cursor-pointer">
-      <Button
-        variant="ghost"
-        size="xl"
-        className={cn(
-          "group transition-colors",
-          isLiked &&
-            "text-red-500 hover:text-red-600 rounded-full cursor-pointer "
-        )}
+    <div className="flex items-center gap-2 cursor-pointer w-30-10">
+      <Heart
         onClick={handleLike}
-        disabled={isLoading}
-      >
-        <Heart
-          className={cn(
-            "h-30 w-30 transition-all text-3xl cursor-pointer",
-            isLiked && "fill-red-500 cursor-pointer",
-            "group-hover:scale-120 cursor-pointer"
-          )}
-        />
-      </Button>
+        size={40}
+        className={cn(
+          "h-5 w-5 transition-all text-xl cursor-pointer  stroke-red-600",
+          isLiked && "fill-red-500 cursor-pointer ",
+          "hover:scale-120 cursor-pointer "
+        )}
+      />
+
       <span className="text-sm font-medium">{likes}</span>
     </div>
   );

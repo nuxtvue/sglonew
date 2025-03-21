@@ -2,7 +2,7 @@ import React from "react";
 import { IoCreateOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { FaRegNewspaper, FaUsers, FaPencilAlt } from "react-icons/fa";
-
+import { FaRegComments } from "react-icons/fa6";
 const AdminSidebar = () => {
   return (
     <div className="flex flex-col gap-2 h-screen">
@@ -29,6 +29,13 @@ const AdminSidebar = () => {
       >
         <FaUsers className="group-hover:text-blue-700 group-hover:text-xl" />
         Все новости
+      </Link>
+      <Link
+        to="/admin/allcomments"
+        className="flex items-center gap-2 text-lg hover:bg-blue-100/50 py-2 px-4 rounded-lg cursor-pointer hover:ml-2 transition-all duration-300 group hover:font-semibold"
+      >
+        <FaRegComments className="group-hover:text-blue-700 group-hover:text-xl" />
+        Все комментарии
       </Link>
     </div>
   );

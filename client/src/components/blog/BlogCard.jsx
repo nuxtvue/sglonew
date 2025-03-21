@@ -12,6 +12,8 @@ import { Link } from "react-router-dom";
 import DateComponent from "@/helpers/DateHelper";
 import { FaRegEye } from "react-icons/fa";
 import { IoPricetagOutline } from "react-icons/io5";
+import { FaRegComment } from "react-icons/fa";
+import { FaRegHeart } from "react-icons/fa";
 
 const BlogCard = ({ blog }) => {
   return (
@@ -48,7 +50,16 @@ const BlogCard = ({ blog }) => {
           <div className="text-gray-500 text-sm">
             <DateComponent date={blog.createdDate} />
           </div>
+
           <div className="flex items-center gap-2 text-gray-500 text-sm justify-center">
+            <div className="text-gray-500 text-sm flex items-center gap-1">
+              <FaRegComment />
+              {blog.comments.length}
+            </div>
+            <div className="text-gray-500 text-sm flex items-center gap-1">
+              <FaRegHeart />
+              {blog.likes.length}
+            </div>
             <span className="flex items-center gap-1">
               <FaRegEye className="" />
               {blog.views}

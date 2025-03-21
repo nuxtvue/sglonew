@@ -116,6 +116,12 @@ export const deleteUser = async (req, res) => {
 
 export const getUserRegistrationStats = async (req, res) => {
   try {
+    // Проверяем, является ли пользователь администратором
+    const isAdmin = await User.findById(req.id);
+    if (!isAdmin || isAdmin.role !== "admin") {
+      return res.status(403).json({ message: "Недостаточно прав" });
+    }
+
     const stats = await User.aggregate([
       {
         $group: {
@@ -148,9 +154,22 @@ export const getUserRegistrationStats = async (req, res) => {
       { $sort: { date: 1 } },
     ]);
 
-    res.json(stats);
-  } catch (error) {
-    console.error("Ошибка при получении статистики регистраций:", error);
-    res.status(500).json({ message: "Ошибка при получении статистики" });
+    res.status(200).json(stats);
+  } catch (err) {
+    console.error("Ошибка при получении статистики регистраций:", err);
+    res.status(500).json({
+      success: false,
+      message: "Ошибка при получении статистики регистраций",
+    });
   }
+};
+
+export const getUserById = async (req, res) => {
+  const { id } = req.params;
+
+  const user = await User.findById(id).select("-password");
+  if (!user) {
+    return res.status(404).json({ message: "Пользователь не найден" });
+  }
+  res.json(user);
 };
