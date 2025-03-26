@@ -15,6 +15,8 @@ import NotFoundPage from "./pages/NotFound";
 import CategoryPage from "./pages/CategoryPage";
 import AllComments from "./pages/admin/AllComments";
 import UserPage from "./pages/UserPage";
+import BannerBageAd from "./pages/admin/BannerPageAd";
+
 function App() {
   return (
     <>
@@ -35,6 +37,7 @@ function App() {
           <Route path="allblogs" element={<AllBlogsAd />} />
           <Route path="allcomments" element={<AllComments />} />
           <Route path="allusers" element={<AllUsersAd />} />
+          <Route path="banners" element={<BannerBageAd />} />
           <Route path="edit/:slug" element={<EditBlogPage />} />
         </Route>
       </Routes>

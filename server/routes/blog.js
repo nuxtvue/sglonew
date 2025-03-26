@@ -12,6 +12,7 @@ import {
   getBlogByUrl,
   getBlogsByCategory,
   searchBlogs,
+  editBlog,
 } from "../controllers/blog.js";
 
 const router = express.Router();
@@ -26,5 +27,6 @@ router.get("/countbytags", isAuthenticated, countByTags);
 router.get("/countbycategory", countDocsByCategory);
 router.get("/getblogsbycategory/:category", getBlogsByCategory);
 router.delete("/deleteblog/:id", isAuthenticated, deleteBlog);
+router.post("/edit", isAuthenticated, upload.array("files", 15), editBlog);
 
 export default router;

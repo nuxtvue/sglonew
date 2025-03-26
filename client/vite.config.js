@@ -19,8 +19,7 @@ export default defineConfig({
     proxy: {
       "/static": "http://localhost:3000",
       "/api": "http://localhost:3000",
-      "/sitemap.xml": "http://localhost:3000",
-      "/robots.txt": "http://localhost:3000",
+      "/sitemap.xml": "http://localhost:3000",      
       // proxy requests to Express server
     },
   },

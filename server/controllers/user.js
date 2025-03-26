@@ -1,6 +1,7 @@
 import { User } from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+// Модель для хранения данных о посещениях
 
 export const register = async (req, res) => {
   const { login, email, password } = req.body;

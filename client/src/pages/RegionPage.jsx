@@ -201,7 +201,10 @@ const RegionPage = () => {
                 <Calendar
                   mode="single"
                   selected={startDate}
-                  onSelect={setStartDate}
+                  onSelect={(date) => {
+                    setStartDate(date);
+                    setIsOpen(false); // Закрываем Popover после выбора даты
+                  }}
                   initialFocus
                   locale={ru}
                 />
@@ -232,7 +235,10 @@ const RegionPage = () => {
                 <Calendar
                   mode="single"
                   selected={endDate}
-                  onSelect={setEndDate}
+                  onSelect={(date) => {
+                    setEndDate(date);
+                    setIsOpen(false); // Закрываем Popover после выбора даты
+                  }}
                   initialFocus
                   locale={ru}
                 />

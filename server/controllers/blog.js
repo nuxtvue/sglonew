@@ -258,3 +258,56 @@ export const countByTags = async (req, res) => {
     res.status(500).json({ message: "Ошибка при получении статистики" });
   }
 };
+
+export const editBlog = async (req, res) => {
+  try {
+    let fiiles = req.files;
+    let { title, description, region, category, banner, content, id } =
+      req.body;
+    let user = await User.findById(req.id);
+    if (user.role !== "admin")
+      return res.status(403).json({ message: "Недостаточно прав" });
+
+    const blog = await Blog.findById(id);
+
+    if (!blog) {
+      return res.status(404).json({ message: "Блог не найден" });
+    }
+    if (title?.length > 0 && title !== "undefined") {
+      blog.title = title;
+    }
+    if (description?.length > 0 && description !== "undefined") {
+      blog.description = description;
+    }
+    if (region?.length > 0 && region !== "undefined") {
+      blog.region = region;
+    }
+    if (category?.length > 0 && category !== "undefined") {
+      blog.tag = category;
+    }
+    if (req.body.banner !== undefined) {
+      console.log(req.body);
+      blog.banner = req.body.banner; // Используем значение из req.body.banner
+    }
+
+    if (content && content !== "undefined") {
+      blog.content = JSON.parse(content);
+    }
+    if (req.files && req.files.length > 0) {
+      if (Array.isArray(blog.coverImageName)) {
+        blog.coverImageName.forEach((file) => {
+          fs.unlink(file.path, (err) => {
+            if (err) console.log(err);
+          });
+        });
+      }
+      const optimizedFiles = await sharpImage(fiiles);
+      blog.coverImageName = optimizedFiles;
+    }
+    await blog.save();
+    res.status(200).json({ message: "Блог успешно изменен", blog });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Ошибка при изменении блога" });
+  }
+};

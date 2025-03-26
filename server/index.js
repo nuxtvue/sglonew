@@ -8,13 +8,19 @@ import cookieParser from "cookie-parser";
 import sharp from "sharp";
 import multer from "multer";
 import path from "path";
+
 import commentRoute from "./routes/comment.js";
 import likeRoute from "./routes/like.js";
+import { generateSitemap } from "./controllers/sitemap.js";
 
 dotenv.config();
 
 const app = express();
 app.use(cookieParser());
+// Добавление маршрута для sitemap.xml
+app.get("/sitemap.xml", generateSitemap);
+// Добавление маршрута для sitemap.xml
+
 const corsOptions = {
   origin: "http://localhost:5173",
   credentials: true,
